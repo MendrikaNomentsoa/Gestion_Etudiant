@@ -1,9 +1,14 @@
 package controllers;
 
 import java.io.IOException;
+import java.sql.Connection;
+import java.sql.PreparedStatement;
+import java.sql.ResultSet;
+import java.sql.SQLException;
 import java.util.ArrayList;
 import java.util.List;
 
+import connexion.DBConnection;
 import jakarta.servlet.ServletException;
 import jakarta.servlet.annotation.WebServlet;
 import jakarta.servlet.http.HttpServlet;
@@ -11,27 +16,40 @@ import jakarta.servlet.http.HttpServletRequest;
 import jakarta.servlet.http.HttpServletResponse;
 import models.Etudiant;
 
-@WebServlet("./etudiants")
-public class EtudiantServlet extends HttpServlet{
+@WebServlet("/etudiants")
+public class EtudiantServlet extends HttpServlet {
 
     @Override
     protected void doGet(HttpServletRequest request, HttpServletResponse response)
-            throws ServletException, IOException{
+            throws ServletException, IOException {
 
-        //Creation de donnees
-         List<Etudiant> liste = new ArrayList<>();
-         liste.add(new Etudiant("Rakoto", 15));
-         liste.add(new Etudiant("Bema", 14));
-         liste.add(new Etudiant("Soa", 16));
+        List<Etudiant> liste = new ArrayList<>();
+        String sql = "SELECT * FROM etudiant";
 
-         //Envoyer les donner au view
+        // Try-with-resources pour fermer automatiquement la connexion
+        try (Connection conn = DBConnection.getConnection();
+             PreparedStatement ps = conn.prepareStatement(sql);
+             ResultSet rs = ps.executeQuery()) {
 
-         // On stocke dans request
-         request.setAttribute("etudiants", liste);
-         //Envoier le request complet à la JSP
-        request.getRequestDispatcher("etudiant.jsp")
-                .forward(request, response);
+            while (rs.next()) {
+                String nom = rs.getString("nom");
+                int age = rs.getInt("age");
+                liste.add(new Etudiant(nom, age));
+            }
 
+            // Debug console
+            System.out.println("Servlet appelée !");
+            System.out.println("Nombre d'étudiants récupérés : " + liste.size());
+            for (Etudiant e : liste) {
+                System.out.println("Etudiant : " + e.getNom() + ", " + e.getAge());
+            }
+
+        } catch (SQLException e) {
+            e.printStackTrace();
+        }
+
+        // Envoyer la liste à la JSP
+        request.setAttribute("etudiants", liste);
+        request.getRequestDispatcher("etudiant.jsp").forward(request, response);
     }
-    
 }
