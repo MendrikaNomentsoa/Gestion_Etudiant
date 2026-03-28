@@ -32,9 +32,10 @@ public class EtudiantServlet extends HttpServlet {
              ResultSet rs = ps.executeQuery()) {
 
             while (rs.next()) {
+                int id = rs.getInt("id");
                 String nom = rs.getString("nom");
                 int age = rs.getInt("age");
-                liste.add(new Etudiant(nom, age));
+                liste.add(new Etudiant(id, nom, age));
             }
 
             // Debug console

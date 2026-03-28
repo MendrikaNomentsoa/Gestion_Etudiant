@@ -26,8 +26,8 @@ public class AjoutServlet extends HttpServlet{
              throws ServletException, IOException{
 
                 // Empêcher le cache
-    response.setHeader("Cache-Control", "no-cache, no-store, must-revalidate");
-    response.setHeader("Pragma", "no-cache");
+                response.setHeader("Cache-Control", "no-cache, no-store, must-revalidate");
+                response.setHeader("Pragma", "no-cache");
         
         String nom = request.getParameter("nom");
         int age = Integer.parseInt(request.getParameter("age"));
