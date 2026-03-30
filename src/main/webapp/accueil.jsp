@@ -13,6 +13,7 @@
 
     <h1>Bonjour, bienvenue sur mon projet JSP !</h1>
     <p>Cette page est pour <%= username %></p>
+    <a href="etudiant.jsp">Page Etudiant</a>
 
 </body>
 </html>

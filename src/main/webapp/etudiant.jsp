@@ -24,7 +24,7 @@
     %>
         <p><%= e.getNom() %> - <%= e.getAge() %> ans</p>
         <a href="modifier?id=<%= e.getId() %>">Modifier</a>
-        <a href="supprimer?id=<%= e.getId() %>">Supprimer</a>
+        <a href="supprimer?id=<%= e.getId() %>">Supprimer</a>p
     <%
         }
     %>

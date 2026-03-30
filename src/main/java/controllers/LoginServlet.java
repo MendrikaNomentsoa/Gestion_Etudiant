@@ -23,11 +23,19 @@ public class LoginServlet extends HttpServlet{
             //Stocker dans une session
             request.getSession().setAttribute("user", username);
             //Rediriger vers acceuil
-            response.sendRedirect("acceuil.jsp");
+            response.sendRedirect("accueil.jsp");
         }else{
             // 5. Rediriger vers login avec erreur
             response.sendRedirect("login.jsp?erreur=1");
         }
+        
     }
+
+    protected void doGet(HttpServletRequest request, HttpServletResponse response)
+    throws ServletException, IOException {
+        // Afficher le formulaire login
+        request.getRequestDispatcher("login.jsp").forward(request, response);
+    }
+
     
 }
